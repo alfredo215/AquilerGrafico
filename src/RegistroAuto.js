@@ -3,7 +3,7 @@ import React from "react";
 function RegistroAuto() {
     return (
         <div className="container">
-            
+              <h4>Registrar Auto</h4>
             <form>
   <div class="mb-3">
     <label for="cliente" class="form-label">Cliente</label>
@@ -35,13 +35,19 @@ function RegistroAuto() {
 
   </div>
   <div class="mb-3">
+    <label for="estado" class="form-label">Estado</label>
+    <input type="text" class="form-control" id="estado"/>
+
+  </div>
+  
+  <div class="mb-3">
     <label for="trabajador" class="form-label">Trabajador</label>
     <input type="text" class="form-control" id="trabajador"/>
 
   </div>
        
                  
-  <button type="submit" class="btn btn-primary">Gurardar</button>
+  <button type="submit" class="btn btn-primary">Guardar</button>
 </form>
 
         </div>

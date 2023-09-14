@@ -4,6 +4,11 @@ import './App.css';
 import Menu from './Menu';
 import Inicio from './Inicio';
 import RegistroAuto from './RegistroAuto';
+import AlquilerAuto from './AlquilerAuto';
+import Login from './Login';
+import ActualizarUser from './ActualizarUser';
+import VerUsuario from './VerUsuario';
+import RegistrarUser from './RegistrarUser';
 function App() {
   return (
     //prueba del alquiler no te olvides
@@ -16,6 +21,12 @@ function App() {
         <Switch>
           <Route path="/" exact component={Inicio} />
           <Route path="/registroauto" component={RegistroAuto}/>
+          <Route path="/alquilerauto" component={AlquilerAuto}/>
+          <Route path="/login" component={Login}/>
+          <Route path="/actualizaruser" component={ActualizarUser}/>
+          <Route path="/verusuario" component={VerUsuario}/>
+          <Route path="/registraruser" component={RegistrarUser}/>
+
         </Switch>
       </div>
     </Router>

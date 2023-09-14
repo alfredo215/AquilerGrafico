@@ -33,10 +33,22 @@ function Menu() {
                 Usuarios
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="#">Registrar Usuario</a>
-                <a className="dropdown-item" href="#">Ver Usuarios</a>
+                <a className="dropdown-item" href="/registraruser">Registrar Usuario</a>
+                <a className="dropdown-item" href="/verusuario">Ver Usuarios</a>
               </div>
             </li>
+
+            <li className="nav-item dropdown">
+              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Prueba de datos
+              </a>
+              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a className="dropdown-item" href="/login">Login</a>
+                <a className="dropdown-item" href="/alquilerauto">AlquilerAuto</a>
+                <a className="dropdown-item" href="/actualizaruser">ActualizarUsuario</a>
+              </div>
+            </li>
+
           </ul>
         </div>
       </div>
