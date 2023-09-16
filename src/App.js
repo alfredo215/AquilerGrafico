@@ -1,5 +1,5 @@
-import logo from './logo.svg';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React from 'react';
 import './App.css';
 import Menu from './Menu';
 import Inicio from './Inicio';
@@ -18,16 +18,16 @@ function App() {
     
       <div>
         <Menu />
-        <Switch>
-          <Route path="/" exact component={Inicio} />
-          <Route path="/registroauto" component={RegistroAuto}/>
-          <Route path="/alquilerauto" component={AlquilerAuto}/>
-          <Route path="/login" component={Login}/>
-          <Route path="/actualizaruser" component={ActualizarUser}/>
-          <Route path="/verusuario" component={VerUsuario}/>
-          <Route path="/registraruser" component={RegistrarUser}/>
+        <Routes>
+        <Route path="/" exact element={<Inicio/>} />
+          <Route path="/registroauto" exact element={<RegistroAuto/>}/>
+          <Route path="/alquilerauto/:id" exact element={<AlquilerAuto/>}/>
+          <Route path="/login" exact element={<Login/> }/>
+          <Route path="/actualizaruser/:id" exact element={<ActualizarUser/>}/>
+          <Route path="/verusuario" exact element={<VerUsuario/>}/>
+          <Route path="/registraruser" exact element={<RegistrarUser/>}/>
 
-        </Switch>
+        </Routes>
       </div>
     </Router>
   );
