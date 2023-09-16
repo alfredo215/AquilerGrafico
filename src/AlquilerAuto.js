@@ -64,15 +64,9 @@ function AlquilerAuto() {
       });
       if (response.ok) {
         alert("Auto registrado con éxito");
-        // Limpia los campos del formulario después de un registro exitoso
-        setCliente("");
-        setDui("");
-        setFecha("");
-        setCarro_modelo("");
-        setPlaca("");
-        setColor("");
-        setEstado("");
-        setUsuarioId_FK(0); // Reinicializa como número
+        // Redirigir al usuario a la página /verusuario después de la actualización
+        navigate(`/`);
+
       } else {
         alert("Error al registrar el auto");
       }

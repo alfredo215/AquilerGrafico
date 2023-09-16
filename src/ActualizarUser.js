@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from 'react-router-dom';
 
 function ActualizarUser() {
   const { id } = useParams();
@@ -14,7 +13,6 @@ function ActualizarUser() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-       // Authorization: "Bearer " + localStorage.getItem('token')
       }
     })
       .then(response => response.json())
@@ -31,21 +29,22 @@ function ActualizarUser() {
   const actualizarUsuario = async (e) => {
     e.preventDefault();
     const datos = { "email": email, "nombre": nombre };
-    console.log(datos);
 
     try {
-        //error
       const response = await fetch(`http://localhost:3000/auth/${id}`, {
         method: "PATCH",
         body: JSON.stringify(datos),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          //Authorization: "Bearer " + localStorage.getItem('token')
         },
       });
 
       if (response.ok) {
         alert("Usuario actualizado con éxito");
+        
+        // Redirigir al usuario a la página /verusuario después de la actualización
+        navigate(`/verusuario`);
+
         // Agregar aquí la lógica adicional después de una actualización exitosa.
       } else {
         alert("Error al actualizar el usuario");
