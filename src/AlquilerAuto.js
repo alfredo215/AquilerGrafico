@@ -49,7 +49,7 @@ function AlquilerAuto() {
       "usuarioId_FK": usuarioId_FK
     };
 
-    console.log(datos);
+    //console.log(datos);
 
     try {
     const response = await fetch(`http://localhost:3000/rentas/${id}`, {
