@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function AlquilerAuto() {
   const { id } = useParams();
@@ -14,26 +16,61 @@ function AlquilerAuto() {
   const [color, setColor] = useState("");
   const [estado, setEstado] = useState("");
   const [usuarioId_FK, setUsuarioId_FK] = useState(0);
+  const [usuarios, setUsuarios] = useState([]); // Lista de usuarios
 
   useEffect(() => {
-    fetch(`http://localhost:3000/rentas/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    // Fetch the list of users, similar to what you did in RegistroAuto.js
+    async function fetchUsuarios() {
+      try {
+        const response = await fetch("http://localhost:3000/usuarios", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUsuarios(data);
+        } else {
+          console.error("Error al obtener la lista de usuarios");
+        }
+      } catch (error) {
+        console.error("Error al obtener la lista de usuarios:", error);
       }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setCliente(data.cliente);
-        setDui(data.dui);
-        setFecha(data.fecha);
-        setCarro_modelo(data.carro_modelo);
-        setPlaca(data.placa);
-        setColor(data.color);
-        setEstado(data.estado);
-        setUsuarioId_FK(data.usuarioId_FK);
-      })
-      .catch(error => console.error(error));
+    }
+
+    fetchUsuarios();
+  }, []);
+
+  useEffect(() => {
+    // Fetch the rental data using the ID
+    async function fetchRenta() {
+      try {
+        const response = await fetch(`http://localhost:3000/rentas/${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setCliente(data.cliente);
+          setDui(data.dui);
+          setFecha(data.fecha);
+          setCarro_modelo(data.carro_modelo);
+          setPlaca(data.placa);
+          setColor(data.color);
+          setEstado(data.estado);
+          setUsuarioId_FK(data.usuarioId_FK);
+        } else {
+          console.error("Error al obtener los datos de la renta");
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos de la renta:", error);
+      }
+    }
+
+    fetchRenta();
   }, [id]);
 
   const alquilarAuto = async (e) => {
@@ -48,8 +85,6 @@ function AlquilerAuto() {
       "estado": estado,
       "usuarioId_FK": usuarioId_FK
     };
-
-    //console.log(datos);
 
     try {
     const response = await fetch(`http://localhost:3000/rentas/${id}`, {
@@ -106,12 +141,12 @@ function AlquilerAuto() {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="fecha" className="form-label">
+          <label htmlFor="fecha" className="form-label ">
             Fecha
-          </label>
-          <input
-            type="text"
-            className="form-control"
+          </label> <br />
+          <input 
+            type="date"
+            className="col-3"
             id="fecha"
             value={fecha}
             onChange={(e) => setFecha(e.target.value)}
@@ -126,7 +161,8 @@ function AlquilerAuto() {
             className="form-control"
             id="carro_modelo"
             value={carro_modelo}
-            onChange={(e) => setCarro_modelo(e.target.value)}
+           onChange={(e) => setCarro_modelo(e.target.value)}
+           readOnly
           />
         </div>
         <div className="mb-3">
@@ -139,6 +175,7 @@ function AlquilerAuto() {
             id="placa"
             value={placa}
             onChange={(e) => setPlaca(e.target.value)}
+            readOnly
           />
         </div>
         <div className="mb-3">
@@ -151,31 +188,41 @@ function AlquilerAuto() {
             id="color"
             value={color}
             onChange={(e) => setColor(e.target.value)}
+            readOnly
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="estado" className="form-label">
-            Estado
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="estado"
-            value={estado}
-            onChange={(e) => setEstado(e.target.value)}
-          />
-        </div>
+  <label htmlFor="estado" className="form-label">
+    Estado
+  </label>
+  <select
+    className="form-select"
+    id="estado"
+    value={estado}
+    onChange={(e) => setEstado(e.target.value)}
+  >
+    <option value="Rentado">Rentado</option>
+    <option value="Sin Rentar">Sin Rentar</option>
+  </select>
+</div>
+
         <div className="mb-3">
           <label htmlFor="usuarioId_FK" className="form-label">
             Trabajador
           </label>
-          <input
-            type="number"
+          <select
             className="form-control"
             id="usuarioId_FK"
             value={usuarioId_FK}
             onChange={(e) => setUsuarioId_FK(Number(e.target.value))}
-          />
+          >
+            <option value="">Selecciona un trabajador</option>
+            {usuarios.map((usuario) => (
+              <option key={usuario.usuarioId} value={usuario.usuarioId}>
+                {usuario.nombre}
+              </option>
+            ))}
+          </select>
         </div>
 
         <button type="submit" className="btn btn-primary">

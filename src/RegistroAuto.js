@@ -1,32 +1,109 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function RegistroAuto() {
   const [cliente, setCliente] = useState("");
   const [dui, setDui] = useState("");
-  const [fecha, setFecha] = useState("");
+  const [fecha, setFecha] = useState(null);
   const [carro_modelo, setCarro_modelo] = useState("");
   const [placa, setPlaca] = useState("");
   const [color, setColor] = useState("");
   const [estado, setEstado] = useState("");
-  const [usuarioId_FK, setUsuarioId_FK] = useState(0); // Inicializado como número
+  const [usuarios, setUsuarios] = useState([]); // Lista de usuarios
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(""); // Usuario seleccionado
 
-  const SaveAuto = async (e) => {
+  const [fechaError, setFechaError] = useState("");
+  const [carro_modeloError, setCarro_modeloError] = useState("");
+  const [placaError, setPlacaError] = useState("");
+  const [colorError, setColorError] = useState("");
+  const [estadoError, setEstadoError] = useState("");
+  const[usuarioId_FKError, setUsuarioId_FKError] = useState("");
+
+  useEffect(() => {
+    // Lógica para obtener la lista de usuarios, por ejemplo, una llamada a la API
+    async function fetchUsuarios() {
+      try {
+        const response = await fetch("http://localhost:3000/usuarios", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUsuarios(data);
+        } else {
+          console.error("Error al obtener la lista de usuarios");
+        }
+      } catch (error) {
+        console.error("Error al obtener la lista de usuarios:", error);
+      }
+    }
+
+    fetchUsuarios();
+  }, []);
+
+  async function SaveAuto(e) {
     e.preventDefault();
 
-    // Crea un objeto con los datos del auto
+    if (!fecha) {
+      setFechaError("La fecha no puede quedar vacía");
+      
+    } else {
+      setFechaError("");
+    }
+
+    if (!carro_modelo) {
+      setCarro_modeloError("El modelo de carro no puede quedar vacío");
+      
+    } else {
+      setCarro_modeloError("");
+    }
+
+    if (!placa) {
+      setPlacaError("La placa no puede quedar vacía");
+      
+    } else {
+      setPlacaError("");
+    }
+
+    if (!color) {
+      setColorError("El color no puede quedar vacío");
+      
+    } else {
+      setColorError("");
+    }
+
+    if (!estado) {
+      setEstadoError("El estado no puede quedar vacío");
+     
+    } else {
+      setEstadoError("");
+    }
+
+    if(!usuarioId_FKError) {
+      setUsuarioId_FKError("Debe seleccionar un Trabajador");
+      return;
+    } else {
+      setUsuarioId_FKError("");
+    }
+
+    // Convertir usuarioSeleccionado a número
+    const usuarioIdNumero = parseInt(usuarioSeleccionado, 10);
+
     const nuevoAuto = {
       cliente: cliente || "Sin cliente",
       dui: dui || "000000000",
-      fecha,
+      fecha: fecha.toISOString().slice(0, 10),
       carro_modelo,
       placa,
       color,
       estado,
-      usuarioId_FK,
+      usuarioId_FK: usuarioIdNumero, // Usar usuarioIdNumero
     };
 
     try {
-      // Realiza una solicitud POST al servicio backend
       const response = await fetch("http://localhost:3000/rentas", {
         method: "POST",
         headers: {
@@ -37,15 +114,14 @@ function RegistroAuto() {
 
       if (response.ok) {
         alert("Auto registrado con éxito");
-        // Limpia los campos del formulario después de un registro exitoso
         setCliente("");
         setDui("");
-        setFecha("");
+        setFecha(null);
         setCarro_modelo("");
         setPlaca("");
         setColor("");
         setEstado("");
-        setUsuarioId_FK(0); // Reinicializa como número
+        setUsuarioSeleccionado(""); // Limpiar el usuario seleccionado
       } else {
         alert("Error al registrar el auto");
       }
@@ -53,49 +129,23 @@ function RegistroAuto() {
       console.error("Error:", error);
       alert("Error al registrar el auto");
     }
-  };
+  }
 
   return (
     <div className="container">
       <h4>Registrar Auto</h4>
       <form onSubmit={SaveAuto}>
         <div className="mb-3">
-          <label htmlFor="cliente" className="form-label" style={{ display: "none" }}>
-            Cliente
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="cliente"
-            value={cliente}
-            onChange={(e) => setCliente(e.target.value)}
-            style={{ display: "none" }}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="dui" className="form-label" style={{ display: "none" }}>
-            DUI
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="dui"
-            value={dui}
-            onChange={(e) => setDui(e.target.value)}
-            style={{ display: "none" }}
-          />
-        </div>
-        <div className="mb-3">
           <label htmlFor="fecha" className="form-label">
             Fecha
           </label>
-          <input
-            type="text"
+          <DatePicker
+            selected={fecha}
+            onChange={(date) => setFecha(date)}
+            dateFormat="yyyy-MM-dd"
             className="form-control"
-            id="fecha"
-            value={fecha}
-            onChange={(e) => setFecha(e.target.value)}
           />
+          {fechaError && <div className="alert alert-danger">{fechaError}</div>}
         </div>
         <div className="mb-3">
           <label htmlFor="carro_modelo" className="form-label">
@@ -108,6 +158,9 @@ function RegistroAuto() {
             value={carro_modelo}
             onChange={(e) => setCarro_modelo(e.target.value)}
           />
+          {carro_modeloError && (
+            <div className="alert alert-danger">{carro_modeloError}</div>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="placa" className="form-label">
@@ -120,6 +173,7 @@ function RegistroAuto() {
             value={placa}
             onChange={(e) => setPlaca(e.target.value)}
           />
+          {placaError && <div className="alert alert-danger">{placaError}</div>}
         </div>
         <div className="mb-3">
           <label htmlFor="color" className="form-label">
@@ -132,30 +186,44 @@ function RegistroAuto() {
             value={color}
             onChange={(e) => setColor(e.target.value)}
           />
+          {colorError && <div className="alert alert-danger">{colorError}</div>}
         </div>
         <div className="mb-3">
-          <label htmlFor="estado" className="form-label">
-            Estado
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="estado"
-            value={estado}
-            onChange={(e) => setEstado(e.target.value)}
-          />
-        </div>
+  <label htmlFor="estado" className="form-label">
+    Estado
+  </label>
+  <select
+    className={`form-select ${estadoError ? 'is-invalid' : ''}`}
+    id="estado"
+    value={estado}
+    onChange={(e) => setEstado(e.target.value)}
+  >
+    <option value="">Selecciona un estado</option>
+    <option value="Rentado">Rentado</option>
+    <option value="Sin Rentar">Sin Rentar</option>
+  </select>
+  {estadoError && <div className="alert alert-danger">{estadoError}</div>}
+</div>
+
         <div className="mb-3">
           <label htmlFor="usuarioId_FK" className="form-label">
             Trabajador
           </label>
-          <input
-            type="number" // Cambiado a type="number"
+          <select
             className="form-control"
             id="usuarioId_FK"
-            value={usuarioId_FK}
-            onChange={(e) => setUsuarioId_FK(Number(e.target.value))} // Conversión a número
-          />
+            value={usuarioSeleccionado}
+            onChange={(e) => setUsuarioSeleccionado(e.target.value)}
+
+          >
+            <option value="">Selecciona un trabajador</option>
+            {usuarios.map((usuario) => (
+              <option key={usuario.usuarioId} value={usuario.usuarioId}>
+                {usuario.nombre}
+              </option>
+            ))}
+          </select>
+          {usuarioId_FKError && <div className="alert alert-danger">{usuarioId_FKError}</div>}
         </div>
 
         <button type="submit" className="btn btn-primary">
