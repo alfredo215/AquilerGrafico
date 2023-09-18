@@ -25,33 +25,37 @@ function Menu() {
       </button>
       <div className="collapse navbar-collapse" id="navbarNav">
         <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
-            <Link exact className="nav-link" to="/"  activeClassName="active"> Inicio</Link >
+
+        {localStorage.getItem('token') && <li className="nav-item">
+            <Link  className="nav-link" to="/"  activeClassName="active">Inicio</Link >
           </li>
-       
-            <li className="nav-item">
-              <Link  exact className="nav-link" to="/registroauto"  activeClassName="active">Registrar Autos</Link >
-            </li>
-            
+          }
+            {localStorage.getItem('token') && <li className="nav-item">
+            <Link  className="nav-link" to="/registroauto"  activeClassName="active">Registrar Autos</Link >
+          </li>
+          }
             <li className="nav-item dropdown">
               <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Usuarios
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a className="dropdown-item" href="/registraruser">Registrar Usuario</a>
-                <a className="dropdown-item" href="/verusuario">Ver Usuarios</a>
+                {localStorage.getItem('token') && <a className="dropdown-item">
+                <a  className="nav-link" href="/verusuario"  activeClassName="active">Ver Usuarios</a >
+                </a>
+                }
               </div>
             </li>
-
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Prueba de datos
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="/login">Login</a>
-                <a className="dropdown-item" href="/actualizaruser">ActualizarUsuario</a>
-              </div>
-            </li>
+              
+          {!localStorage.getItem('token') && <li className="nav-item">
+            <Link  className="nav-link" to="/login"  activeClassName="active">Login</Link >
+          </li>
+          }
+          {localStorage.getItem('token') && <li className="nav-item">
+            <Link  className="nav-link" to="/salir"  activeClassName="active">Salir</Link >
+          </li>
+          }
+            
 
           </ul>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
+import { useNavigate } from 'react-router-dom';
 function RegistrarUser() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
   const [pass, setPass] = useState("");
@@ -11,6 +12,9 @@ function RegistrarUser() {
   async function FEnviar(e) {
     e.preventDefault();
 
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
+  }
     // Validación individual para cada campo
     if (!nombre) {
       setNombreError("El nombre no puede quedar vacío");
@@ -46,6 +50,7 @@ function RegistrarUser() {
         body: JSON.stringify(usuario),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
+          
         },
       });
 

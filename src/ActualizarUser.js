@@ -2,17 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function ActualizarUser() {
-  const { id } = useParams();
   const navigate = useNavigate();
-
+  if (!localStorage.getItem('token')) {
+    navigate('/login');
+}
+  const { id } = useParams();
   const [email, setEmail] = useState('');
   const [nombre, setNombre] = useState('');
+  
 
   useEffect(() => {
     fetch(`http://localhost:3000/usuarios/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: "Bearer "+ localStorage.getItem('token')
       }
     })
       .then(response => response.json())
@@ -36,6 +40,7 @@ function ActualizarUser() {
         body: JSON.stringify(datos),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
+          Authorization: "Bearer "+ localStorage.getItem('token')
         },
       });
 

@@ -9,7 +9,10 @@ function Inicio() {
   const [usuarios, setUsuarios] = useState([]);
   const [elementoAEliminar, setElementoAEliminar] = useState(null);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
-
+  
+  if (!localStorage.getItem('token')) {
+    navigate('/login');
+}
   useEffect(() => {
     // Obtener datos de rentas
     axios

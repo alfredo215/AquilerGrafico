@@ -9,6 +9,7 @@ import Login from './Login';
 import ActualizarUser from './ActualizarUser';
 import VerUsuario from './VerUsuario';
 import RegistrarUser from './RegistrarUser';
+import Salir from './Salir';
 function App() {
   return (
     //prueba del alquiler no te olvides
@@ -26,6 +27,7 @@ function App() {
           <Route path="/actualizaruser/:id" exact element={<ActualizarUser/>}/>
           <Route path="/verusuario" exact element={<VerUsuario/>}/>
           <Route path="/registraruser" exact element={<RegistrarUser/>}/>
+          <Route path="/salir" element={<Salir/>} />
 
         </Routes>
       </div>

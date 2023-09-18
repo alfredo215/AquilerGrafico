@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {  useNavigate } from 'react-router-dom';
 
 function RegistroAuto() {
+
+  const navigate = useNavigate();
+
+  if (!localStorage.getItem('token')) {
+    navigate('/login');
+}
+
   const [cliente, setCliente] = useState("");
   const [dui, setDui] = useState("");
   const [fecha, setFecha] = useState(null);
@@ -28,6 +36,7 @@ function RegistroAuto() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            Authorization: "Bearer "+ localStorage.getItem('token')
           },
         });
         if (response.ok) {
@@ -82,7 +91,7 @@ function RegistroAuto() {
       setEstadoError("");
     }
 
-    if(!usuarioId_FKError) {
+    if(!usuarioSeleccionado) {
       setUsuarioId_FKError("Debe seleccionar un Trabajador");
       return;
     } else {
@@ -95,7 +104,7 @@ function RegistroAuto() {
     const nuevoAuto = {
       cliente: cliente || "Sin cliente",
       dui: dui || "000000000",
-      fecha: fecha.toISOString().slice(0, 10),
+      fecha: fecha ? fecha.toISOString().slice(0, 10) : null,
       carro_modelo,
       placa,
       color,
@@ -108,6 +117,7 @@ function RegistroAuto() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: "Bearer "+ localStorage.getItem('token')
         },
         body: JSON.stringify(nuevoAuto),
       });
@@ -138,7 +148,7 @@ function RegistroAuto() {
         <div className="mb-3">
           <label htmlFor="fecha" className="form-label">
             Fecha
-          </label>
+          </label><br />
           <DatePicker
             selected={fecha}
             onChange={(date) => setFecha(date)}

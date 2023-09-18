@@ -5,6 +5,10 @@ import Button from '@mui/material/Button';
 
 function VerUsuario() {
   const navigate = useNavigate();
+
+  if (!localStorage.getItem('token')) {
+    navigate('/login');
+}
   const [usuarios, setUsuarios] = useState([]);
   const [elementoAEliminar, setElementoAEliminar] = useState(null);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
