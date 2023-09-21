@@ -27,7 +27,7 @@ function RegistroAuto() {
   const [colorError, setColorError] = useState("");
   const [estadoError, setEstadoError] = useState("");
   const [usuarioId_FKError, setUsuarioId_FKError] = useState("");
-  const [placaExistsError, setPlacaExistsError] = useState("");
+
 
   useEffect(() => {
     async function fetchUsuarios() {
@@ -93,31 +93,8 @@ function RegistroAuto() {
       setUsuarioId_FKError("");
     }
 
-    const usuarioIdNumero = parseInt(usuarioSeleccionado, 10);
-
-    // Verificar si la placa ya existe en la base de datos
-    try {
-      const response = await fetch(`http://localhost:3000/rentas?placa=${placa}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem('token')
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.length > 0) {
-          setPlacaExistsError("Esta placa ya está registrada");
-          return;
-        }
-      } else {
-        console.error("Error al verificar la existencia de la placa");
-      }
-    } catch (error) {
-      console.error("Error al verificar la existencia de la placa:", error);
-    }
-
+    const usuarioIdNumero = parseInt(usuarioSeleccionado, 10)
+    
     // Si la placa no existe, guardar el registro
     const nuevoAuto = {
       cliente: cliente || "Sin cliente",
@@ -150,7 +127,7 @@ function RegistroAuto() {
         setColor("");
         setEstado("");
         setUsuarioSeleccionado("");
-        setPlacaExistsError(""); // Limpiar el mensaje de error de la placa
+  
       } else {
         alert("Error al registrar el auto");
       }
@@ -198,13 +175,13 @@ function RegistroAuto() {
             </label>
             <input
               type="text"
-              className={`form-control ${placaExistsError ? 'is-invalid' : ''}`}
+              className="form-control"
               id="placa"
               value={placa}
               onChange={(e) => setPlaca(e.target.value)}
             />
             {placaError && <div className="alert alert-danger">{placaError}</div>}
-            {placaExistsError && <div className="alert alert-danger">{placaExistsError}</div>}
+          
           </div>
         </div>
         <div className="row mb-3">
