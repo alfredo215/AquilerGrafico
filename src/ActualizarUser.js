@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Title from './Title'; // Importa el componente Title
 
 function ActualizarUser() {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ function ActualizarUser() {
 
   return (
     <div className="container">
-      <h1>Actualizar registro con id {id}</h1>
+     <Title text={`Rentar auto con id ${id}`} /> {/* Utiliza el componente Title */}
       <form onSubmit={actualizarUsuario}>
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label">

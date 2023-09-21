@@ -1,67 +1,113 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Link,
-} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
+function MenuComponent() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-function Menu() {
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const appBarStyle = {
+    backgroundColor: "#b8a3d1", // Cambia el color de fondo aquí
+  };
+
+  const typographyStyle = {
+    flexGrow: 1,
+    color: 'black', // Cambia el color del texto aquí
+  };
+
+  const buttonStyle = {
+    color: 'black', // Cambia el color del texto del botón aquí
+  };
+
+  const menuIconStyle = {
+    color: 'black', // Cambia el color del icono del menú aquí
+  };
+
   return (
-    
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-    <div className="container">
-      <Link  className="navbar-brand" to="/">Mi Aplicación</Link >
-      <button
-        className="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav ml-auto">
-
-        {localStorage.getItem('token') && <li className="nav-item">
-            <Link  className="nav-link" to="/"  activeClassName="active">Inicio</Link >
-          </li>
-          }
-            {localStorage.getItem('token') && <li className="nav-item">
-            <Link  className="nav-link" to="/registroauto"  activeClassName="active">Registrar Autos</Link >
-          </li>
-          }
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div>
+      <AppBar position="static" style={appBarStyle}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={handleClick}
+          >
+            <MenuIcon style={menuIconStyle} />
+          </IconButton>
+          <Typography variant="h6" style={typographyStyle}>
+            Apolo Kars
+          </Typography>
+          <Button color="inherit" component={Link} to="/" style={buttonStyle}>
+            Inicio
+          </Button>
+          <Button color="inherit" component={Link} to="/registroauto" style={buttonStyle}>
+            Registrar Autos
+          </Button>
+          {localStorage.getItem('token') && (
+            <>
+              <Button
+                color="inherit"
+                aria-controls="user-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+                style={buttonStyle}
+              >
                 Usuarios
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a className="dropdown-item" href="/registraruser">Registrar Usuario</a>
-                {localStorage.getItem('token') && <a className="dropdown-item">
-                <a  className="nav-link" href="/verusuario"  activeClassName="active">Ver Usuarios</a >
-                </a>
-                }
-              </div>
-            </li>
-              
-          {!localStorage.getItem('token') && <li className="nav-item">
-            <Link  className="nav-link" to="/login"  activeClassName="active">Login</Link >
-          </li>
-          }
-          {localStorage.getItem('token') && <li className="nav-item">
-            <Link  className="nav-link" to="/salir"  activeClassName="active">Salir</Link >
-          </li>
-          }
-            
+              </Button>
+              <Menu
+                id="user-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                getContentAnchorEl={null}
+              >
+                <MenuItem component={Link} to="/registraruser" style={buttonStyle}>
+                  Registrar Usuario
+                </MenuItem>
+                {localStorage.getItem('token') && (
+                  <MenuItem component={Link} to="/verusuario" style={buttonStyle}>
+                    Ver Usuarios
+                  </MenuItem>
+                )}
+              </Menu>
+              <Button color="inherit" component={Link} to="/salir" style={buttonStyle}>
+                Salir
+              </Button>
+            </>
+          )}
+          {!localStorage.getItem('token') && (
+            <Button color="inherit" component={Link} to="/login" style={buttonStyle}>
+              Login
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+}
 
-          </ul>
-        </div>
-      </div>
-    </nav>
-    );
-  }
-  
-  export default Menu;
+export default MenuComponent;

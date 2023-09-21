@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import Title from './Title'; // Importa el componente Title
 
 function AlquilerAuto() {
   const { id } = useParams();
@@ -128,7 +129,7 @@ function AlquilerAuto() {
 
   return (
     <div className="container">
-      <h4>Rentar auto con id {id}</h4>
+      <Title text={`Rentar auto con id ${id}`} /> {/* Utiliza el componente Title */}
       <form onSubmit={alquilarAuto}>
         <div className="mb-3">
           <label htmlFor="cliente" className="form-label">

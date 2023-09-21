@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import Title from './Title'; // Importa el componente Title
 function RegistrarUser() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -69,7 +70,7 @@ function RegistrarUser() {
 
   return (
     <div className="container">
-      <h4>Registrar Usuario</h4>
+      <Title text="Registrar Usuario" /> {/* Utiliza el componente Title */}
       <form>
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label">

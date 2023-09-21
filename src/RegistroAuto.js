@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {  useNavigate } from 'react-router-dom';
+import Title from './Title'; // Importa el componente Title
 
 function RegistroAuto() {
 
@@ -143,7 +144,7 @@ function RegistroAuto() {
 
   return (
     <div className="container">
-      <h4>Registrar Auto</h4>
+      <Title text="Registrar Auto" /> {/* Utiliza el componente Title */}
       <form onSubmit={SaveAuto}>
         <div className="mb-3">
           <label htmlFor="fecha" className="form-label">

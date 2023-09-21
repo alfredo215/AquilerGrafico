@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Button from '@mui/material/Button';
+import Title from './Title'; // Importa el componente Title
 
 function VerUsuario() {
   const navigate = useNavigate();
 
   if (!localStorage.getItem('token')) {
     navigate('/login');
-}
+  }
+  
   const [usuarios, setUsuarios] = useState([]);
   const [elementoAEliminar, setElementoAEliminar] = useState(null);
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
@@ -46,14 +48,14 @@ function VerUsuario() {
   return (
     <div className="container">
       <div>
-        <h4>Listado de usuarios</h4>
+        <Title text="Listado de usuarios" /> {/* Utiliza el componente Title */}
         {usuarios.length === 0 && (
           <h3 className="text-center alert alert-danger">No hay datos para mostrar</h3>
         )}
         {usuarios.length > 0 && (
           <div style={{ maxHeight: '400px', overflowY: 'scroll' }}>
             <table className="table table-bordered table-dark">
-              <thead>
+              <thead className="sticky-top">
                 <tr>
                   <th>ID</th>
                   <th>Nombre</th>

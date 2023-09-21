@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+body {
+  margin: 0; /* Elimina los márgenes predeterminados del cuerpo */
+  padding: 0; /* Elimina el relleno predeterminado del cuerpo */
+  background-color: #d1c4e9; /* Establece el color de fondo deseado */
+}
