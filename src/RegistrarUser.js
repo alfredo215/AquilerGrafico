@@ -58,10 +58,11 @@ function RegistrarUser() {
       if (response.status === 200) {
         const responseData = await response.json();
         localStorage.setItem("token", responseData.token);
-        alert("El usuario se ha registrado");
+        alert("El usuario no se ha registrado");
         window.location.href = "/";
       } else {
-        alert("El usuario no se ha registrado");
+        alert("El usuariose ha registrado");
+        window.location.href = "/verusuario";
       }
     } catch (error) {
       console.error("Ocurrió un error:", error);
@@ -114,6 +115,7 @@ function RegistrarUser() {
           {passError && <div className="alert alert-danger">{passError}</div>}
         </div>
       </form>
+      <br />  
       <button className="btn btn-primary" onClick={FEnviar}>
         Enviar
       </button>

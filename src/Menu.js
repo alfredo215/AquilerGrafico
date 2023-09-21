@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 function MenuComponent() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -37,6 +37,8 @@ function MenuComponent() {
     color: 'black', // Cambia el color del icono del menú aquí
   };
 
+  const isLogged = localStorage.getItem('token'); // Verificar si el usuario está logeado
+
   return (
     <div>
       <AppBar position="static" style={appBarStyle}>
@@ -52,14 +54,16 @@ function MenuComponent() {
           <Typography variant="h6" style={typographyStyle}>
             Apolo Kars
           </Typography>
-          <Button color="inherit" component={Link} to="/" style={buttonStyle}>
-            Inicio
-          </Button>
-          <Button color="inherit" component={Link} to="/registroauto" style={buttonStyle}>
-            Registrar Autos
-          </Button>
-          {localStorage.getItem('token') && (
+          {isLogged ? (
             <>
+
+<Button color="inherit" component={Link} to="/" style={buttonStyle}>
+                Inicio
+              </Button>
+              <Button color="inherit" component={Link} to="/registroauto" style={buttonStyle}>
+                Registrar Autos
+              </Button>
+
               <Button
                 color="inherit"
                 aria-controls="user-menu"
@@ -88,21 +92,27 @@ function MenuComponent() {
                 <MenuItem component={Link} to="/registraruser" style={buttonStyle}>
                   Registrar Usuario
                 </MenuItem>
-                {localStorage.getItem('token') && (
-                  <MenuItem component={Link} to="/verusuario" style={buttonStyle}>
-                    Ver Usuarios
-                  </MenuItem>
-                )}
+                <MenuItem component={Link} to="/verusuario" style={buttonStyle}>
+                  Ver Usuarios
+                </MenuItem>
               </Menu>
+
+
               <Button color="inherit" component={Link} to="/salir" style={buttonStyle}>
                 Salir
               </Button>
+              {/* Elementos relacionados con los automóviles */}
+              
             </>
-          )}
-          {!localStorage.getItem('token') && (
-            <Button color="inherit" component={Link} to="/login" style={buttonStyle}>
-              Login
-            </Button>
+          ) : (
+            <>
+              <Button color="inherit" component={Link} to="/registraruser" style={buttonStyle}>
+                Registrar Usuario
+              </Button>
+              <Button color="inherit" component={Link} to="/login" style={buttonStyle}>
+                Login
+              </Button>
+            </>
           )}
         </Toolbar>
       </AppBar>
